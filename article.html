@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>文章｜莫藍韻漾</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Markdown 解析器 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <main class="container article-page">
+    <article class="article">
+      <div id="article-content">載入中...</div>
+
+      <footer class="article-footer">
+        <p><a href="index.html">← 回首頁</a></p>
+      </footer>
+    </article>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const file = params.get("file");
+
+    if (!file) {
+      document.getElementById("article-content").innerHTML = "<p>找不到文章。</p>";
+    } else {
+      fetch(file)
+        .then(res => res.text())
+        .then(md => {
+          const html = marked.parse(md);
+          document.getElementById("article-content").innerHTML = html;
+        })
+        .catch(err => {
+          document.getElementById("article-content").innerHTML = "<p>讀取文章失敗。</p>";
+        });
+    }
+  </script>
+</body>
+</html>
